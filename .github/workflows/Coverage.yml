@@ -1,0 +1,79 @@
+name: Update model.json for gh-pages branch.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      PYTHONUNBUFFERED: 1
+      GITHUB_ACTOR: ${{ github.actor }}
+      GITHUB_TOKEN: ${{ secrets.RULE_COVERAGE_SVC_PAT}}
+
+    steps:
+    - name: Checkout sigma-rule-coverage
+      uses: actions/checkout@v2
+      with:
+        path: sigma-rule-coverage
+
+    - name: Checkout sigma-rule-coverage (gh-phages)
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.RULE_COVERAGE_SVC_PAT }}
+        ref: gh-pages
+        path: sigma-rule-coverage-gh-pages
+
+    - name: Checkout sigma
+      uses: actions/checkout@v2
+      with:
+        repository: SigmaHQ/sigma
+        path: sigma
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.10"
+
+    - name: Install Poetry
+      uses: abatilo/actions-poetry@v2.0.0
+      with:
+        poetry-version: "1.4.2"
+
+    - name: Install
+      working-directory: sigma-rule-coverage
+      run: poetry install
+
+    - name: Build
+      working-directory: sigma-rule-coverage
+      run: |
+        # Activate poetry shell from sigma-rule-coverage in this shell
+        . $(poetry env info --path)/bin/activate
+
+        # Copy rules
+        chmod +x $GITHUB_WORKSPACE/sigma-rule-coverage/rule-coverage.py
+        $GITHUB_WORKSPACE/sigma-rule-coverage/rule-coverage.py --rules "$GITHUB_WORKSPACE/sigma/rules" --output "$GITHUB_WORKSPACE/sigma-rule-coverage-gh-pages/data/model.json"
+
+    - name: Push
+      working-directory: sigma-rule-coverage-gh-pages
+      run: |
+        # Prepare Git environment
+        git config --global user.email "github.action@localhost.local"
+        git config --global user.name "CI"
+        git config --global --add safe.directory /github/workspace
+
+        echo "machine github.com" > "$HOME/.netrc"
+        echo "  login $GITHUB_ACTOR" >> "$HOME/.netrc"
+        echo "  password $GITHUB_TOKEN" >> "$HOME/.netrc"
+
+        echo "machine api.github.com" >> "$HOME/.netrc"
+        echo "  login $GITHUB_ACTOR" >> "$HOME/.netrc"
+        echo "  password $GITHUB_TOKEN" >> "$HOME/.netrc"
+
+        # Git add and commit.
+        git add .
+        git commit -m "Updated model.json" || true
+
+        git config --global --add --bool push.autoSetupRemote true || true
+        git push
