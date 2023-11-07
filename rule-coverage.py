@@ -92,7 +92,7 @@ def get_rule(path: str) -> dict:
     rule_yaml = rule_yaml[0]
     result["id"] = rule_yaml["id"]
     result["title"] = rule_yaml["title"]
-    result["file"] = os.path.relpath(path, utility.get_rule_directory()).replace("\\", "/")
+    result["file"] = os.path.relpath(path, os.getcwd()).replace("\\", "/")
 
     if "status" in rule_yaml:
         result["status"] = rule_yaml["status"]

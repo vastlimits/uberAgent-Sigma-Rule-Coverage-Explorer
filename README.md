@@ -8,15 +8,5 @@ The script imports all Sigma rules and evaluates the creation of rules for every
 Run the script:
 
 ```
-python rule-coverage.py
-```
-
-## Run the test webserver.
-
-### Converting to the latest uberAgent version
-To preview the static website including the metadata about rules simply run:
-
-```
-cd www
-python -m http.server
+python rule-coverage.py --rules /path/to/rules --output model.json
 ```

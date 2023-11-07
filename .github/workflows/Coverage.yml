@@ -1,17 +1,13 @@
-name: Update model.json for gh-pages branch.
+name: Update gh-pages.
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    env:
-      PYTHONUNBUFFERED: 1
-      GITHUB_ACTOR: ${{ github.actor }}
-      GITHUB_TOKEN: ${{ secrets.RULE_COVERAGE_SVC_PAT}}
-
     steps:
     - name: Checkout sigma-rule-coverage
       uses: actions/checkout@v2
@@ -61,15 +57,6 @@ jobs:
         # Prepare Git environment
         git config --global user.email "github.action@localhost.local"
         git config --global user.name "CI"
-        git config --global --add safe.directory /github/workspace
-
-        echo "machine github.com" > "$HOME/.netrc"
-        echo "  login $GITHUB_ACTOR" >> "$HOME/.netrc"
-        echo "  password $GITHUB_TOKEN" >> "$HOME/.netrc"
-
-        echo "machine api.github.com" >> "$HOME/.netrc"
-        echo "  login $GITHUB_ACTOR" >> "$HOME/.netrc"
-        echo "  password $GITHUB_TOKEN" >> "$HOME/.netrc"
 
         # Git add and commit.
         git add .

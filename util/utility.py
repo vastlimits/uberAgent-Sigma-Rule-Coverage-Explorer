@@ -1,8 +1,6 @@
 import os
 from typing import List
 
-def get_rule_directory():
-    return os.path.join(os.getcwd(), "rules")
 
 def get_rule_paths(path) -> List[str]:
 
