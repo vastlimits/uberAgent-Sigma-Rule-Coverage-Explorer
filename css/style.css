@@ -144,7 +144,6 @@ h3 {
 }
 
 .progress-bar {
-    background-color: var(--secondary-color);
     color: var(--primary-text-color);
     font-weight: bold;
     text-align: center;
