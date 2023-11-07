@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rule Coverage Dashboard</title>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+    <div class="wrap">
+        <!-- Hero Description -->
+        <div class="hero-section">
+            <div class="logo-container">
+                <img src="/img/uberagent.svg" alt="uberAgent" class="centered-logo">
+            </div>
+            <h1>uberAgent's Sigma Rules Coverage Insights</h1>
+            <p>Explore the expansive reach of Sigma rules within uberAgent's Threat Detection Engine.</p>
+        </div>
+
+        <!-- Filter Row -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Filter</h3>
+            </div>
+            <div class="card-content">
+                <div id="filterRow">
+                    <!-- Filter selects will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Card -->
+        <div class="card" id="resultCard">
+            <div class="card-header">
+                <h3 class="card-title">Results</h3>
+            </div>
+            <div id="backendResults">
+                <!-- Backend result rows will be inserted here by JavaScript -->
+            </div>
+        </div>
+
+        <!-- What's uberAgent Threat Detection Engine? -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">What's uberAgent Threat Detection Engine?</h3>
+            </div>
+            <div class="card-content">
+                <h3>uberAgent ESA: Precision in Threat Detection</h3>
+                <p>With uberAgent Endpoint Security Analytics (ESA), monitoring system activities becomes not just
+                    possible, but also intuitive and efficient. By creating a detailed trace of system activities,
+                    uberAgent ESA turns the complexity of threat detection into a streamlined process.</p>
+
+                <h3>Intelligent Rule Matching</h3>
+                <p>uberAgent ESA's power lies in its sophisticated rule matching system. Whether it's a suspicious
+                    process, an abnormal network connection, or other indicators of risk, uberAgent ESA efficiently
+                    flags such activities. Each detection translates into an event within your Security Information and
+                    Event Management (SIEM) system, like Splunk, ensuring you're alerted to potential threats in
+                    real-time.</p>
+
+                <h3>uAQL: The Core of uberAgent's Rule Engine</h3>
+                <p>The foundation of Threat Detection's effectiveness is uAQL (uberAgent Query Language), an advanced
+                    yet readable query language designed for both human clarity and machine speed. This synergy of
+                    ease-of-use and performance is what makes uberAgent ESA's ruleset both robust and user-friendly.</p>
+
+                <h3>Predefined and Customizable Rules</h3>
+                <p>Armed with hundreds of predefined rules targeting widespread attack vectors, plus the ability to
+                    import Sysmon rules and Sigma signatures, uberAgent ESA is versatile out of the box. Users are
+                    encouraged to tailor and expand upon the existing ruleset to fit their unique security landscape.
+                </p>
+
+                <h3>Rule Provenance and Storage</h3>
+                <p>uberAgent ESA benefits from a dual-source rule pool: meticulously crafted vast limits rules and
+                    converted third-party rules, such as those from the Sigma project. All Threat Detection rules are
+                    accessible and maintained within the uberAgent Configuration GitHub repository, ensuring
+                    transparency and ease of updates.</p>
+
+                <h3>Enhanced with Metadata</h3>
+                <p>Each rule in uberAgent ESA is enriched with metadata, providing additional context such as MITRE
+                    ATT&CK technique IDs, and each event is tagged with a risk score for better assessment and
+                    prioritization.</p>
+
+                <h3>Seamless Integration and Visualization</h3>
+                <p>The events detected by uberAgent ESA are not just logged but also visualized within the Threat
+                    Detection Events dashboard. Integrated within the uberAgent_ESA Splunk searchhead app, this feature
+                    provides a comprehensive and actionable overview of security events.</p>
+
+                <p class="card-source">Source: <a href="https://uberagent.com" target="_blank">uberagent.com</a></p>
+            </div>
+        </div>
+
+        <!-- What's Sigma? -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">What's Sigma?</h3>
+            </div>
+            <div class="card-content">
+                <p>Sigma is a generic and open signature format that allows you to describe relevant log events in a
+                    straightforward manner. It is designed to be both flexible and easy to write, with applicability to
+                    any type of log file.</p>
+                <p>The primary goal of the Sigma project is to create a structured way for researchers and analysts to
+                    document their detection methods once developed and share them with the community. This facilitates
+                    a collaborative approach to threat detection and enhances collective security knowledge.</p>
+                <p>In the world of digital forensics, Sigma's role is analogous to what Snort represents for network
+                    traffic analysis, and YARA for file analysis. It is a critical tool for the creation of sharable,
+                    scalable, and systematic rule sets for log event analysis.</p>
+                <p class="card-source">Source: <a href="https://github.com/SigmaHQ/sigma" target="_blank">Sigma GitHub
+                        Repository</a></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="js/app.js"></script>
+</body>
+
+</html>

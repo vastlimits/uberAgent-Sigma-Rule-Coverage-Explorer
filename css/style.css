@@ -1,0 +1,170 @@
+:root {
+    --primary-color: rgb(67, 183, 200);
+    --primary-sub-color: #27727c;
+    --secondary-color: #6c757d;
+    --progress-height: 2rem;
+    --primary-text-color: #FFFFFF;
+    --font-headings: 'proxima-nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    --font-body: 'myriad-pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    --font-headings-condensed: 'proxima-nova-condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: #f8f8f8;
+    padding-top: 20px;
+
+    background-image: url('/img/background-alternative.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.wrap {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.hero-section {
+    background-color: var(--primary-color);
+    background-image: url('/img/background.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: var(--primary-text-color);
+
+    padding: 50px 20px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    text-align: center;
+    min-height: 200px;
+}
+
+.hero-section>h1 {
+    font-family: var(--font-headings);
+}
+
+.hero-section>p {
+    font-family: var(--font-headings-condensed);
+    color: var(--primary-sub-color);
+    font-weight: bold;
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: var(--primary-sub-color);
+    padding: 15px 32px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.primary-button:hover {
+    background-color: var(--primary-sub-color);
+    color: var(--primary-text-color);
+}
+
+select {
+    width: calc(25% - 10px);
+    padding: 10px;
+    margin: 5px;
+    font-size: 1rem;
+    font-family: var(--primary-font);
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
+    text-align: center;
+    background-color: var(--primary-text-color);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: var(--primary-color);
+    color: var(--primary-text-color);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-content {
+    padding: 10px;
+    background-color: #f9f9f9;
+    text-align: left;
+}
+
+.card-source {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+.card-source a {
+    color: var(--primary-color)
+}
+
+.row-wrap {
+    padding: 10px;
+}
+
+.row-wrap:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.card-title {
+    font-size: 1.1rem;
+}
+
+.progress {
+    height: var(--progress-height);
+    background-color: #e9ecef;
+    border-radius: 0.25rem;
+    margin: 10px;
+}
+
+.progress-bar {
+    background-color: var(--secondary-color);
+    color: var(--primary-text-color);
+    font-weight: bold;
+    text-align: center;
+    height: var(--progress-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-bar-primary {
+    background-color: var(--primary-color);
+}
+
+.product-label {
+    font-size: 1.2rem;
+    text-align: left;
+    margin: 0 10px;
+    padding: 0.5rem 0;
+}
+
+.product-description {
+    font-size: 0.8rem;
+    text-align: left;
+    margin: 0 10px;
+}
+
+.logo-container {
+    text-align: center;
+}
+
+.centered-logo {
+    width: 25%;
+    height: auto;
+}
