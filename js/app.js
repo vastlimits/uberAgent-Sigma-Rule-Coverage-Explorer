@@ -1,6 +1,17 @@
 let AppModel = {}
 
 function createSelectFilter(filterTitle, filterOptions, id) {
+
+    const filterItem = document.createElement('div');
+    filterItem.classList = "grid-col-2";
+
+    const wrap = document.createElement('div');
+    wrap.classList.add('row-wrap');
+
+    const filterItemLabel = document.createElement('div');
+    filterItemLabel.classList = "filter-item-label";
+    filterItemLabel.innerText = filterTitle;
+
     const select = document.createElement('select');
     select.id = id;
     select.innerHTML = `<option value="">Any ${filterTitle}</option>`;
@@ -10,7 +21,12 @@ function createSelectFilter(filterTitle, filterOptions, id) {
     });
 
     select.addEventListener('change', updateResults);
-    return select;
+
+    wrap.appendChild(filterItemLabel);
+    wrap.appendChild(select);
+    filterItem.appendChild(wrap);
+
+    return filterItem;
 }
 
 function initializeFilters() {

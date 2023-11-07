@@ -43,20 +43,22 @@ body {
     min-height: 200px;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     font-family: var(--font-headings);
 }
 
-.card-content > h3 {
+.card-content>h3 {
     margin-top: 25px;
     margin-bottom: 5px;
 }
 
-.card-content > h3:first-child {
+.card-content>h3:first-child {
     margin-top: 0px;
 }
 
-.card-content > p {
+.card-content>p {
     margin-top: 0px;
     text-align: justify;
 }
@@ -84,14 +86,6 @@ h1, h2, h3 {
     color: var(--primary-text-color);
 }
 
-select {
-    width: calc(25% - 10px);
-    padding: 10px;
-    margin: 5px;
-    font-size: 1rem;
-    font-family: var(--primary-font);
-}
-
 .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     margin-bottom: 1rem;
@@ -111,12 +105,11 @@ select {
 }
 
 .card-content {
-    padding: 25px;
+    padding: 15px;
     text-align: left;
 }
 
 .filter-content {
-    padding: 10px;
     text-align: left;
 }
 
@@ -132,7 +125,7 @@ select {
 }
 
 .row-wrap {
-    padding: 10px;
+    padding: 15px;
 }
 
 .row-wrap:nth-child(even) {
@@ -140,14 +133,14 @@ select {
 }
 
 .card-title {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
 .progress {
     height: var(--progress-height);
     background-color: #e9ecef;
     border-radius: 0.25rem;
-    margin: 10px;
+    margin-top: 10px;
 }
 
 .progress-bar {
@@ -166,16 +159,14 @@ select {
 }
 
 .product-label {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     text-align: left;
-    margin: 0 10px;
     padding: 0.5rem 0;
 }
 
 .product-description {
     font-size: 0.8rem;
     text-align: left;
-    margin: 0 10px;
 }
 
 .logo-container {
@@ -185,4 +176,37 @@ select {
 .centered-logo {
     width: 25%;
     height: auto;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.grid-col-2 {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.filter-item-label {
+    font-size: 1.1rem;
+    text-align: left;
+    padding: 0.5rem 0;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    font-family: var(--primary-font);
+    box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+    .filter-item {
+        width: 100%;
+        max-width: 100%;
+    }
 }
