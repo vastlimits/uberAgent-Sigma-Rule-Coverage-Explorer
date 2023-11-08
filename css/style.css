@@ -1,23 +1,35 @@
 :root {
+    --font-headings: 'proxima-nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    --font-body: 'myriad-pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    --font-headings-condensed: 'proxima-nova-condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
+    --font-size-heading: 1.2rem;
+    --font-size-heading-large: 1.5rem;
+    --font-size-smaller: 0.8rem;
+    --font-size-body: 1.0rem;
+    --row-color: "transparent";
+
+    --primary-text-color: #FFFFFF;
     --primary-color: rgb(67, 183, 200);
     --primary-sub-color: #27727c;
     --secondary-color: #6c757d;
     --progress-height: 2rem;
-    --primary-text-color: #FFFFFF;
-    --font-headings: 'proxima-nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    --font-body: 'myriad-pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    --font-headings-condensed: 'proxima-nova-condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    --row-color-alternate: #f9f9f9;
+    --progress-background-color: #e9ecef;
+    --background-color: #f8f8f8;
+    --shadow-color: rgba(0, 0, 0, 0.2);
 }
 
 body {
     font-family: var(--font-body);
-    background-color: #f8f8f8;
+    font-size: var(--font-body);
+    background-color: var(--background-color);
     padding-top: 25px;
 
     background-image: url('/img/background-alternative.svg');
-    background-size: cover;
+    background-size: auto;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: top;
 }
 
 .wrap {
@@ -73,7 +85,7 @@ h3 {
     background-color: var(--primary-color);
     color: var(--primary-sub-color);
     padding: 15px 32px;
-    font-size: 20px;
+    font-size: var(--font-size-body);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -87,7 +99,7 @@ h3 {
 }
 
 .card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px 0 var(--shadow-color);
     margin-bottom: 1rem;
     text-align: center;
     background-color: var(--primary-text-color);
@@ -102,6 +114,7 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: center;
+    border-bottom: 1px solid var(--primary-sub-color);
 }
 
 .card-content {
@@ -111,34 +124,44 @@ h3 {
 
 .filter-content {
     text-align: left;
+    background-color: var(--primary-color);
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--primary-sub-color);
 }
 
 .card-source {
-    font-size: 0.8rem;
+    font-size: var(--font-size-smaller);
     color: #6c757d;
     margin-top: 1rem;
     font-style: italic;
 }
 
-.card-source a {
-    color: var(--primary-color)
+a {
+    color: var(--primary-color);
+    text-decoration: none;
 }
 
 .row-wrap {
     padding: 15px;
+    background-color: var(--row-color);
 }
 
 .row-wrap:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: var(--row-color-alternate);
 }
 
 .card-title {
-    font-size: 1.2rem;
+    font-size: var(--font-size-heading);
+}
+
+.card-title-number {
+    font-size: var(--font-size-heading-large);
+    text-align: right;
 }
 
 .progress {
     height: var(--progress-height);
-    background-color: #e9ecef;
+    background-color: var(--progress-background-color);
     border-radius: 0.25rem;
     margin-top: 10px;
 }
@@ -157,15 +180,25 @@ h3 {
     background-color: var(--primary-color);
 }
 
-.product-label {
-    font-size: 1.1rem;
+.row-title {
+    font-size: var(--font-size-heading);
     text-align: left;
     padding: 0.5rem 0;
 }
 
-.product-description {
-    font-size: 0.8rem;
+.row-description {
+    font-size: var(--font-size-smaller);
     text-align: left;
+}
+
+.row-description-primary {
+    color: var(--primary-sub-color);
+    font-weight: bold;
+}
+
+.row-description a {
+    line-height: 1.5rem;
+    font-weight: bold;
 }
 
 .logo-container {
@@ -183,6 +216,12 @@ h3 {
     justify-content: flex-start;
 }
 
+.grid-col-1 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 .grid-col-2 {
     display: flex;
     flex-direction: column;
@@ -190,15 +229,17 @@ h3 {
 }
 
 .filter-item-label {
-    font-size: 1.1rem;
+    font-size: var(--font-size-heading);
     text-align: left;
     padding: 0.5rem 0;
+    color: var(--primary-text-color);
+    font-weight: bold;
 }
 
 select {
     width: 100%;
     padding: 10px;
-    font-size: 1rem;
+    font-size: var(--font-size-body);
     font-family: var(--primary-font);
     box-sizing: border-box;
 }

@@ -47,30 +47,15 @@
             <a href="https://uberagent.com/download/" target="_blank"><button class="primary-button" role="link">Download</button></a>
         </div>
 
-        <div class="card">
+        <div class="card" id="resultCard">
             <div class="card-header">
-                <h3 class="card-title">Filter</h3>
+                <h3 class="card-title">Coverage</h3>
             </div>
             <div class="filter-content">
                 <div class="grid" id="filterRow">
                 </div>
             </div>
-        </div>
-
-        <div class="card" id="resultCard">
-            <div class="card-header">
-                <h3 class="card-title">Coverage</h3>
-            </div>
             <div id="backendResults">
-            </div>
-        </div>
-
-        <div class="grid">
-            <div class="grid-col-2">
-
-            </div>
-            <div class="grid-col-2">
-
             </div>
         </div>
 
@@ -122,6 +107,18 @@
             </div>
         </div>
 
+        <div class="card" id="resultCard">
+            <div class="card-header">
+                <h3 class="card-title">Conversion Issues <span id="conversionErrorNumber" class="card-title-number"></span></h3>
+            </div>
+            <div class="filter-content">
+                <div class="grid" id="errorFilterRow">
+                </div>
+            </div>
+            <div id="backendErrorResults">
+            </div>
+        </div>
+
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">What's Sigma?</h3>
@@ -140,6 +137,7 @@
                 <p class="card-source">Source: <a href="https://github.com/SigmaHQ/sigma" target="_blank">Sigma GitHub Repository</a></p>
             </div>
         </div>
+
 
     </div>
 

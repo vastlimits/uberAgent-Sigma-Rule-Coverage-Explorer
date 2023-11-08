@@ -1,9 +1,9 @@
 let AppModel = {}
 
-function createSelectFilter(filterTitle, filterOptions, id) {
+function createSelectFilter(classNameColumn, filterTitle, filterOptions, id, skipAny) {
 
     const filterItem = document.createElement('div');
-    filterItem.classList = "grid-col-2";
+    filterItem.classList = classNameColumn;
 
     const wrap = document.createElement('div');
     wrap.classList.add('row-wrap');
@@ -14,13 +14,15 @@ function createSelectFilter(filterTitle, filterOptions, id) {
 
     const select = document.createElement('select');
     select.id = id;
-    select.innerHTML = `<option value="">Any ${filterTitle}</option>`;
+    if (!skipAny)
+        select.innerHTML = `<option value="">Any ${filterTitle}</option>`;
 
     filterOptions.forEach(option => {
         select.innerHTML += `<option value="${option}">${option}</option>`;
     });
 
     select.addEventListener('change', updateResults);
+    select.addEventListener('change', updateErrorResults);
 
     wrap.appendChild(filterItemLabel);
     wrap.appendChild(select);
@@ -43,10 +45,13 @@ function initializeFilters() {
     });
 
     const filterRow = document.getElementById('filterRow');
-    filterRow.appendChild(createSelectFilter('Status', [...statusSet], 'statusFilter'));
-    filterRow.appendChild(createSelectFilter('Level', [...levelSet], 'levelFilter'));
-    filterRow.appendChild(createSelectFilter('Category', [...categorySet], 'categoryFilter'));
-    filterRow.appendChild(createSelectFilter('Product', [...productSet], 'productFilter'));
+    filterRow.appendChild(createSelectFilter('grid-col-2', 'Status', [...statusSet], 'statusFilter'));
+    filterRow.appendChild(createSelectFilter('grid-col-2', 'Level', [...levelSet], 'levelFilter'));
+    filterRow.appendChild(createSelectFilter('grid-col-2', 'Category', [...categorySet], 'categoryFilter'));
+    filterRow.appendChild(createSelectFilter('grid-col-2', 'Product', [...productSet], 'productFilter'));
+
+    const errorFilterRow = document.getElementById('errorFilterRow');
+    errorFilterRow.appendChild(createSelectFilter('grid-col-1', 'Backend', Object.keys(AppModel.status), 'backendFilter', true));
 }
 
 function countCoverage(backendIds, rules) {
@@ -57,6 +62,45 @@ function countCoverage(backendIds, rules) {
         }
     });
     return count;
+}
+
+function createRow(textTitle, textContent) {
+
+    const title = document.createElement('div');
+    title.classList.add('row-title');
+    title.textContent = textTitle;
+
+    const content = document.createElement('div');
+    content.classList.add('row-description');
+    content.textContent = textContent;
+
+    return { title, content  };
+}
+
+function createRowWithProgressBar(backendName, coverageCount, totalRules) {
+    const coveragePercent = (coverageCount / totalRules) * 100;
+
+    const wrap = document.createElement('div');
+    wrap.classList.add('row-wrap');
+
+    const { title, content } = createRow(backendName, `${coverageCount} of ${totalRules}`);
+
+    const progressBarContainer = document.createElement('div');
+    progressBarContainer.classList.add('progress');
+
+    const progressBar = document.createElement('div');
+    progressBar.classList.add('progress-bar', 'progress-bar-primary');
+    progressBar.style.width = `${coveragePercent.toFixed(2)}%`;
+    if (coverageCount > 0) {
+        progressBar.textContent = `${coveragePercent.toFixed(2)}%`;
+    }
+
+    progressBarContainer.appendChild(progressBar);
+    wrap.appendChild(title);
+    wrap.appendChild(content);
+    wrap.appendChild(progressBarContainer);
+
+    return wrap;
 }
 
 function updateResults() {
@@ -78,42 +122,90 @@ function updateResults() {
     });
 
     Object.entries(backends).forEach(([backendName, backendIds]) => {
+        const coverageCount = countCoverage(backendIds, filteredRules);
         if (filteredRules.length === 0) {
+            const wrap = document.createElement('div');
             wrap.classList.add('row-wrap');
+            const emptyRow = createRow(backendName, 'No results available.');
+            wrap.appendChild(emptyRow.title);
+            wrap.appendChild(emptyRow.content);
+            backendResults.appendChild(wrap);
             return;
         }
 
-        const coverageCount = countCoverage(backendIds, filteredRules);
-        const coveragePercent = (coverageCount / filteredRules.length) * 100;
+        const rowWithProgressBar = createRowWithProgressBar(backendName, coverageCount, filteredRules.length);
+        backendResults.appendChild(rowWithProgressBar);
+    });
+}
+
+
+function updateErrorResults() {
+
+    const errors = AppModel.errors;
+    const backendErrorResults = document.getElementById('backendErrorResults');
+    const conversionErrorNumber = document.getElementById('conversionErrorNumber');
+
+    backendErrorResults.innerHTML = '';
+    conversionErrorNumber.innerText = '';
+
+    const backendFilterValue = document.getElementById('backendFilter').value;
+
+    if (!(backendFilterValue in errors))
+        return;
+
+    const backendErrors = errors[backendFilterValue];
+
+    // Right now 'missing_field' error is the only error we care about as displaying
+    // not yet supported log sources makes no sense here.
+
+    if (!('missing_field' in backendErrors))
+        return;
+
+    const backendMissingFields = backendErrors['missing_field'];
+    let count = 0;
+    Object.entries(backendMissingFields).forEach(([field, value]) => {
+
+        count++;
 
         const wrap = document.createElement('div');
         wrap.classList.add('row-wrap');
 
-        const row = document.createElement('div');
-        row.classList.add('product-label');
-        row.textContent = backendName;
+        const itemField = createRow('Missing Field', field);
+        const itemCategories = createRow('Categories', value['logsource.categories'].join(', '));
+        const itemProducts = createRow('Products', value['logsource.products'].join(', '));
+        const itemRules = createRow('Rules', value.refs.length);
 
-        const rowLine = document.createElement('div');
-        rowLine.classList.add('product-description');
-        rowLine.textContent = `${coverageCount} of ${filteredRules.length}`;
+        itemField.content.classList.add('row-description-primary');
+        itemCategories.content.classList.add('row-description-primary');
+        itemProducts.content.classList.add('row-description-primary');
+        itemRules.content.classList.add('row-description-primary');
 
-        const progressBarContainer = document.createElement('div');
-        progressBarContainer.classList.add('progress');
+        wrap.appendChild(itemField.title);
+        wrap.appendChild(itemField.content);
+        wrap.appendChild(itemCategories.title);
+        wrap.appendChild(itemCategories.content);
+        wrap.appendChild(itemProducts.title);
+        wrap.appendChild(itemProducts.content);
+        wrap.appendChild(itemRules.title);
+        wrap.appendChild(itemRules.content);
 
-        const progressBar = document.createElement('div');
-        progressBar.classList.add('progress-bar', 'progress-bar-primary');
-        progressBar.style.width = `${coveragePercent.toFixed(2)}%`;
-        if (coverageCount > 0)
-            progressBar.textContent = `${coveragePercent.toFixed(2)}%`;
+        for (var i = 0; i < value.refs.length; ++i) {
+            const rule = AppModel.rules.find((rule) => { return rule.id == value.refs[i]; });
+            const ruleLine = document.createElement('a');
+            ruleLine.href = rule.file.replace('../sigma', 'https://github.com/SigmaHQ/sigma/tree/master');
+            ruleLine.target = "_blank";
+            ruleLine.textContent = rule.title;
 
-        progressBarContainer.appendChild(progressBar);
+            const ruleWrap = document.createElement('div');
+            ruleWrap.classList.add('row-description');
+            ruleWrap.appendChild(ruleLine);
 
-        wrap.appendChild(row);
-        wrap.appendChild(rowLine);
-        wrap.appendChild(progressBarContainer);
-
-        backendResults.appendChild(wrap);
+            wrap.appendChild(ruleWrap);
+        }
+        backendErrorResults.appendChild(wrap);
     });
+
+    conversionErrorNumber.innerText = count;
 }
 
 window.onload = function () {
@@ -128,6 +220,7 @@ window.onload = function () {
             AppModel = data;
             initializeFilters();
             updateResults();
+            updateErrorResults();
         })
         .catch(_ => { });
 }
