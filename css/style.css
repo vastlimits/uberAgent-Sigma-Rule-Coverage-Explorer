@@ -61,12 +61,20 @@ h3 {
     font-family: var(--font-headings);
 }
 
-.card-content>h3 {
+h2, h3 {
+    font-size: var(--font-size-heading);
+}
+
+h3 {
+    font-weight: normal;
+}
+
+.card-content>h2 {
     margin-top: 25px;
     margin-bottom: 5px;
 }
 
-.card-content>h3:first-child {
+.card-content>h2:first-child {
     margin-top: 0px;
 }
 
@@ -146,12 +154,17 @@ a {
     background-color: var(--row-color);
 }
 
+.row-wrap p {
+    margin: 0px;
+}
+
 .row-wrap:nth-child(even) {
     background-color: var(--row-color-alternate);
 }
 
 .card-title {
     font-size: var(--font-size-heading);
+
 }
 
 .card-title-number {
@@ -184,6 +197,10 @@ a {
     font-size: var(--font-size-heading);
     text-align: left;
     padding: 0.5rem 0;
+}
+
+.row-title > h2, h3 {
+    margin: 0;
 }
 
 .row-description {

@@ -66,11 +66,11 @@ function countCoverage(backendIds, rules) {
 
 function createRow(textTitle, textContent) {
 
-    const title = document.createElement('div');
+    const title = document.createElement('h3');
     title.classList.add('row-title');
     title.textContent = textTitle;
 
-    const content = document.createElement('div');
+    const content = document.createElement('p');
     content.classList.add('row-description');
     content.textContent = textContent;
 
@@ -196,7 +196,7 @@ function updateErrorResults() {
             ruleLine.target = "_blank";
             ruleLine.textContent = rule.title;
 
-            const ruleWrap = document.createElement('div');
+            const ruleWrap = document.createElement('p');
             ruleWrap.classList.add('row-description');
             ruleWrap.appendChild(ruleLine);
 
