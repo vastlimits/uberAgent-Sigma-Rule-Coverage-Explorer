@@ -4,13 +4,16 @@ import os
 import json
 import yaml
 import argparse
+import re
 
 from util import utility
 
 from sigma.collection import SigmaCollection
+from sigma.exceptions import SigmaTransformationError
 
 from sigma.backends.uberagent import uberagent as uberagent_backend
 from sigma.pipelines.uberagent import uberagent600, uberagent610, uberagent620, uberagent700, uberagent710, uberagent_develop
+from sigma.backends.uberagent.exceptions import MissingPropertyException
 
 def get_backends():
     return {
@@ -47,20 +50,41 @@ def convert_uberagent_develop(rule: SigmaCollection):
     return uberagent_backend(processing_pipeline=uberagent_develop()).convert(rule, "conf")
 
 
-def test_rule(path: str) -> bool:
+def extract_field(input_string: str):
+    # Define the regular expression pattern to find <FIELD>
+    pattern = re.compile(r'<(.*?)>')
+
+    # Search for the pattern in the input string
+    match = pattern.search(input_string)
+
+    # If a match is found, return the field, otherwise return None
+    return match.group(1) if match else None
+
+
+def test_rule(path: str) -> (dict):
     result: dict = {}
     backends = get_backends()
     for backend in backends.keys():
         convert_function = backends[backend]
         try:
+            error = None
+
             # Need to read the rule collection each processing round to not have orphaned
             # attached processing items.
             rule_collection = SigmaCollection.from_yaml(utility.get_rule(path))
             output = convert_function(rule_collection)
+        except SigmaTransformationError as ex:
+            if len(ex.args) == 1 and ex.args[0] == 'Rule type not yet supported.':
+                pass
+            elif len(ex.args) == 1 and 'Cannot transform field' in ex.args[0]:
+                field = extract_field(ex.args[0])
+                if field is not None:
+                    error = { "type": "missing_field", "data": field }
+            output = None
         except:
             output = None
 
-        result[backend] = output is not None and len(output) > 0
+        result[backend] = { "status": output is not None and len(output) > 0, "error": error }
 
     return result
 
@@ -120,6 +144,7 @@ def main() -> int:
 
     output_rules: [] = []
     output_backend_status: dict = {}
+    output_error_status: dict = {}
     count = 0
 
     rule_paths = utility.get_rule_paths(args.rules)
@@ -131,17 +156,50 @@ def main() -> int:
         rule = get_rule(rule_path)
         output_rules.append(rule)
 
-        rule_test_result = test_rule(rule_path)
-        for backend in rule_test_result.keys():
-            is_supported = rule_test_result[backend]
+        rule_results_for_backends = test_rule(rule_path)
+        for backend in rule_results_for_backends.keys():
+            rule_result = rule_results_for_backends[backend]
+            rule_is_supported = rule_result["status"]
+
             if not (backend in output_backend_status):
                 output_backend_status[backend] = []
-            if is_supported:
+            if not (backend in output_error_status):
+                output_error_status[backend] = {}
+
+            if rule_is_supported:
                 output_backend_status[backend].append(rule["id"])
+            else:
+                rule_error = rule_result["error"]
+                if rule_error is not None:
+                    backend_errors = output_error_status.setdefault(backend, {})
+                    rule_error_type = rule_error["type"]
+                    error_type_dict = backend_errors.setdefault(rule_error_type, {})
+
+                    rule_error_data = rule_error["data"]
+                    error_data_dict = error_type_dict.setdefault(rule_error_data, {
+                        "refs": [],
+                        "logsource.categories": [],
+                        "logsource.products": []
+                    })
+
+                    # Append the rule ID if it's not already in the refs
+                    if rule["id"] not in error_data_dict["refs"]:
+                        error_data_dict["refs"].append(rule["id"])
+
+                    # Append the logsource category if it's not already in the categories
+                    category = rule["logsource.category"]
+                    if category not in error_data_dict["logsource.categories"]:
+                        error_data_dict["logsource.categories"].append(category)
+
+                    # Append the logsource product if it's not already in the products
+                    product = rule["logsource.product"]
+                    if product not in error_data_dict["logsource.products"]:
+                        error_data_dict["logsource.products"].append(product)
+
 
 
     with open(args.output, mode="w", encoding="utf-8") as fp:
-        json.dump({ "rules": output_rules, "status": output_backend_status }, fp)
+        json.dump({ "rules": output_rules, "status": output_backend_status, "errors": output_error_status }, fp)
 
     print("Processed {} rules.".format(count))
     return 0
