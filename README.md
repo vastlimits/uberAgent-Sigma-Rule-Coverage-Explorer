@@ -1,11 +1,10 @@
-# uberAgent's Sigma Rules Coverage Insights
+# uberAgent Sigma Rule Coverage Explorer
 
-Explore the expansive reach of Sigma rules within uberAgent's Threat Detection Engine.
+This is a static, client-side-only web app that allows you to browse and explore the Sigma rules supported by uberAgent ESA's Threat Detection Engine for multiple versions of uberAgent.
 
-## Run the test webserver.
+## Run the test web server
 
-### Converting to the latest uberAgent version
-To preview the static website including the metadata about rules simply run:
+To preview the static website, simply run the following:
 
 ```
 python -m http.server
