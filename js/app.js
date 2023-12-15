@@ -83,7 +83,15 @@ function initializeFilters() {
     const showProducts = ['Any Product', 'macos', 'windows'];
 
     AppModel.rules = AppModel.rules.filter(rule => {
-      if (rule && rule['logsource.product'] && showProducts.includes(rule['logsource.product'])) {
+      if(rule && rule['logsource.category'] == null) {
+        return false;
+      }
+
+      if(rule && rule['logsource.product'] == null) {
+        rule['logsource.product'] = 'windows';
+      }
+
+      if (rule && showProducts.includes(rule['logsource.product'])) {
         statusSet.add(rule.status);
         levelSet.add(rule.level);
         categorySet.add(rule['logsource.category']);
