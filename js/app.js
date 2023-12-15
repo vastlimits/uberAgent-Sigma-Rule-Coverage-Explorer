@@ -80,11 +80,25 @@ function initializeFilters() {
     const categorySet = new Set();
     const productSet = new Set();
 
-    AppModel.rules.forEach(rule => {
+    const showProducts = ['Any Product', 'macos', 'windows'];
+
+    AppModel.rules = AppModel.rules.filter(rule => {
+      if (!rule || !rule['logsource.category']) return false;
+
+      if (!rule['logsource.product']) {
+        rule['logsource.product'] = 'windows';
+      }
+
+      if (showProducts.includes(rule['logsource.product'])) {
         statusSet.add(rule.status);
         levelSet.add(rule.level);
         categorySet.add(rule['logsource.category']);
         productSet.add(rule['logsource.product']);
+
+        return true;
+      }
+
+      return false;
     });
 
     const filterRow = document.getElementById('filterRow');
