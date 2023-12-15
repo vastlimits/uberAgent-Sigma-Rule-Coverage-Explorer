@@ -1,141 +1,825 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:image" content="./img/uberAgent-Sigma-Rule-Coverage-Explorer-OG-image.jpg" />
+    <meta property="og:image:width" content="1560" />
+    <meta property="og:image:height" content="780" />
+    <meta property="og:image:type" content="image/png" />
     <title>uberAgent Sigma Rule Coverage Explorer</title>
-
-    <meta name="description" content="This web app allows you to browse and explore the Sigma rules supported by uberAgent ESA's Threat Detection Engine for multiple versions of uberAgent.">
-    <meta name="keywords" content="uberAgent, Sigma rules, threat detection, endpoint security">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="uberAgent Sigma Rule Coverage Explorer">
-    <meta property="og:description" content="This web app allows you to browse and explore the Sigma rules supported by uberAgent ESA's Threat Detection Engine for multiple versions of uberAgent.">
-    <!--
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
-    -->
-
-    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <link rel="icon" type="image/x-icon" href="./img/favicon.svg" />
+    <link rel="stylesheet" href="https://use.typekit.net/htd6dqh.css" />
     <link rel="stylesheet" href="css/style.css" />
-</head>
-
-<body>
-    <div class="wrap">
-
-        <div class="hero-section">
-            <div class="logo-container">
-                <img src="/img/uberagent.svg" alt="uberAgent" class="centered-logo">
-            </div>
-            <h1>uberAgent Sigma Rule Coverage Explorer</h1>
-            <p>This web app allows you to browse and explore the Sigma rules supported by uberAgent ESA's Threat Detection Engine for multiple versions of uberAgent.</p>
-            <a href="https://uberagent.com/docs/uberagent/latest/esa-features-configuration/threat-detection-engine/" target="_blank"><button class="primary-button" role="link">Documentation</button></a>
-            <a href="https://uberagent.com/download/" target="_blank"><button class="primary-button" role="link">Download</button></a>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Sigma rule selection</h2>
-            </div>
-            <div class="filter-content">
-                <div class="grid" id="filterRow">
+  </head>
+  <body class="font-myriad_pro font-normal">
+    <header class="sticky top-0 z-50 w-full bg-white shadow-3xl">
+      <div class="w-full">
+        <div class="mx-auto max-w-screen-xl">
+          <div class="flex items-center justify-between px-4 py-3 sm:py-4">
+            <a href="https://uberagent.com/" target="_blank">
+              <figure>
+                <img
+                  class="h-8 sm:h-12 xl:h-auto"
+                  src="./img/logo.svg"
+                  alt="logo.svg"
+                />
+              </figure>
+            </a>
+            <nav class="group" id="navbar">
+              <div
+                class="fixed -right-[999px] bottom-0 top-0 z-40 w-[320px] bg-white px-6 pt-16 shadow-md transition-all duration-300 group-[.active]:right-0 xl:static xl:w-auto xl:bg-transparent xl:px-0 xl:pt-0 xl:shadow-none"
+              >
+                <button
+                  type="button"
+                  class="close absolute -left-6 top-0 h-8 w-8 bg-white xl:hidden"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-x"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+                <div
+                  class="flex flex-col gap-7 xl:flex-row xl:items-center xl:gap-10"
+                >
+                  <ul
+                    id="menus"
+                    class="flex flex-col gap-5 xl:flex-row xl:items-center xl:gap-11"
+                  >
+                    <li class="group/link relative">
+                      <a
+                        href="#coverage"
+                        class="text-base text-primary-500 transition-[color] duration-200 hover:!text-secondary-500 group-hover/header:text-primary-500 group-[.active]/link:font-bold lg:text-lg"
+                        >Sigma Rule Coverage
+                      </a>
+                    </li>
+                    <li class="group/link relative">
+                      <a
+                        href="#about-uberagent-tde"
+                        class="text-base text-primary-500 transition-[color] duration-200 hover:!text-secondary-500 group-hover/header:text-primary-500 group-[.active]/link:font-bold lg:text-lg"
+                        >About uberAgent TDE
+                      </a>
+                    </li>
+                    <li class="group/link relative">
+                      <a
+                        href="#conversion"
+                        class="text-base text-primary-500 transition-[color] duration-200 hover:!text-secondary-500 group-hover/header:text-primary-500 group-[.active]/link:font-bold lg:text-lg"
+                        >Conversion Issues
+                      </a>
+                    </li>
+                    <li class="group/link relative">
+                      <a
+                        href="#about"
+                        class="text-base text-primary-500 transition-[color] duration-200 hover:!text-secondary-500 group-hover/header:text-primary-500 group-[.active]/link:font-bold lg:text-lg"
+                        >About Sigma
+                      </a>
+                    </li>
+                  </ul>
+                  <ul
+                    class="flex items-center gap-8 border-primary-500 max-xl:border-t max-xl:pt-6"
+                  >
+                    <li class="group/link relative">
+                      <a
+                        href="https://uberagent.com/contact/"
+                        target="_blank"
+                        class="text-base text-primary-500 lg:text-lg"
+                      >
+                        <svg
+                          width="24"
+                          height="18"
+                          viewBox="0 0 24 18"
+                          fill="none"
+                          class="fill-secondary-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M14.0057 11.6919C13.4086 12.0899 12.7151 12.3003 12 12.3003C11.285 12.3003 10.5914 12.0899 9.99431 11.6919L0.159797 5.13532C0.105234 5.09894 0.0520781 5.06102 0 5.02202V15.7656C0 16.9974 0.999609 17.975 2.20936 17.975H21.7906C23.0224 17.975 24 16.9754 24 15.7656V5.02197C23.9478 5.06107 23.8945 5.09908 23.8398 5.1355L14.0057 11.6919Z"
+                          />
+                          <path
+                            opacity="0.5"
+                            d="M0.939844 3.96525L10.7744 10.5218C11.1466 10.77 11.5733 10.8941 12 10.8941C12.4267 10.8941 12.8534 10.77 13.2256 10.5218L23.0602 3.96525C23.6487 3.57314 24 2.91689 24 2.20861C24 0.99075 23.0202 0 21.7914 0H2.20861C0.990797 4.6875e-05 0 0.990797 0 2.20978C0 2.91689 0.351375 3.57314 0.939844 3.96525Z"
+                          />
+                        </svg>
+                      </a>
+                    </li>
+                  </ul>
                 </div>
-            </div>
+              </div>
+              <div
+                class="close invisible fixed inset-0 z-30 opacity-0 group-[.active]:visible group-[.active]:bg-black/40 group-[.active]:opacity-100 xl:hidden"
+              >
+                <span class="sr-only">overlay</span>
+              </div>
+            </nav>
+            <button
+              type="button"
+              class="shrink-0 xl:hidden"
+              id="burger-menu-button"
+            >
+              <svg
+                class="stroke-dark"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 12H21"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3 6H21"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3 18H21"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Sigma rule coverage by uberAgent version</h2>
+      </div>
+    </header>
+    <main>
+      <section
+        class="bg-[url(../img/banner-bg.svg)] bg-cover bg-center bg-no-repeat px-4 pb-16 pt-16 sm:pb-28 sm:pt-28"
+      >
+        <div class="mx-auto max-w-screen-xl">
+          <div
+            class="grid grid-cols-1 items-center max-lg:gap-12 md:grid-cols-2"
+          >
+            <div class="space-y-4 xl:pr-6">
+              <h4
+                class="text-base font-bold text-brand-green-gray sm:text-lg lg:text-2xl"
+              >
+                uberAgent Sigma Rule Coverage Explorer
+              </h4>
+              <h1
+                class="font-proxima_nova text-[32px] font-bold !leading-[1.2] text-white sm:text-[36px] lg:text-[52px]"
+              >
+                Explore the Sigma rules supported by uberAgent ESA's Threat Detection Engine.
+              </h1>
+              <div class="flex items-center gap-4 pt-5">
+                <a
+                  href="https://uberagent.com/docs/"
+                  target="_blank"
+                  class="inline-block bg-g1 bg-[length:200%_auto] px-8 py-3 text-base font-black text-white transition-all duration-200 hover:bg-[right_center]"
+                  >Documentation</a
+                >
+                <a
+                  href="https://uberagent.com/download/"
+                  target="_blank"
+                  class="inline-block px-3 text-base font-black text-white transition-all duration-200 hover:text-[#337f9c]"
+                  >Download</a
+                >
+              </div>
             </div>
-            <div id="backendResults">
+            <div class="">
+              <figure class="relative xl:-mr-10">
+                <img
+                  class="floting w-full"
+                  src="./img/image-1.svg"
+                  alt="image-1.svg"
+                />
+              </figure>
             </div>
+          </div>
         </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">What's uberAgent ESA's Threat Detection Engine?</h2>
+      </section>
+      <section class="section px-4 pt-14 md:pt-28" id="coverage">
+        <div class="mx-auto max-w-screen-xl space-y-8 sm:space-y-12">
+          <div class="mx-auto max-w-[1090px]">
+            <h2
+              class="bg-g2 bg-clip-text text-center font-proxima_nova text-[32px] font-extrabold !leading-[1.2] text-transparent sm:text-[44px] lg:text-[54px]"
+            >
+              Sigma Rule Coverage by uberAgent Version
+            </h2>
+          </div>
+          <div
+            id="filterRow"
+            class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
+          ></div>
+          <div
+            id="backendResults"
+            class="grid grid-cols-1 items-end gap-x-8 gap-y-8 transition-all duration-200 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4"
+          ></div>
+        </div>
+      </section>
+      <section class="pt-17 section relative px-4 md:pt-24" id="about-uberagent-tde">
+        <figure
+          class="absolute left-0 top-1/2 hidden -translate-y-1/2 lg:block"
+        >
+          <img src="./img/circle-one.svg" alt="/circle-one.svg" />
+        </figure>
+        <div class="relative mx-auto max-w-screen-xl space-y-12 lg:space-y-16">
+          <div class="mx-auto max-w-[1090px]">
+            <h2
+              class="bg-g2 bg-clip-text text-center font-proxima_nova text-[32px] font-extrabold !leading-[1.2] text-transparent sm:text-[44px] lg:text-[54px]"
+            >
+              What's uberAgent ESA Threat Detection Engine?
+            </h2>
+          </div>
+          <div
+            class="flex flex-wrap items-start justify-center gap-x-10 gap-y-10 sm:gap-y-16"
+          >
+            <div
+              class="flex flex-col items-center justify-center gap-3 sm:max-w-[265px]"
+            >
+              <figure class="pb-3">
+                <img src="./img/icon-1.svg" alt="icon-1.svg" />
+              </figure>
+              <div class="sm:h-12">
+                <h5
+                  class="line-clamp-2 text-center font-proxima_nova text-lg font-bold !leading-[1.2] text-black lg:text-xl"
+                >
+                  Suspicious System &amp; App Activity
+                </h5>
+              </div>
+              <p class="text-center text-base !leading-[1.5] text-primary-500">
+                uberAgent ESA's Threat Detection Engine makes system &amp; application activity traceable and searchable. 
+                With its transparent, flexible ruleset and open architecture, 
+                uberAgent ESA is the ideal complement to your EDR.
+              </p>
             </div>
-            <div class="card-content">
-                <h2>uberAgent ESA: Precision in Threat Detection</h2>
-                <p>With uberAgent Endpoint Security Analytics (ESA), monitoring system activities becomes not just
-                    possible, but also intuitive and efficient. By creating a detailed trace of system activities,
-                    uberAgent ESA turns the complexity of threat detection into a streamlined process.</p>
-
-                <h2>Intelligent Rule Matching</h2>
-                <p>uberAgent ESA's power lies in its sophisticated rule matching system. Whether it's a suspicious
-                    process, an abnormal network connection, or other indicators of risk, uberAgent ESA efficiently
-                    flags such activities. Each detection translates into an event within your Security Information and
-                    Event Management (SIEM) system, like Splunk, ensuring you're alerted to potential threats in
-                    real-time.</p>
-
-                <h2>Predefined and Customizable Rules</h2>
-                <p>Armed with hundreds of predefined rules targeting widespread attack vectors, plus the ability to
-                    import Sysmon rules and Sigma signatures, uberAgent ESA is versatile out of the box. Users are
-                    encouraged to tailor and expand upon the existing ruleset to fit their unique security landscape.
+            <div
+              class="flex flex-col items-center justify-center gap-3 sm:max-w-[265px]"
+            >
+              <figure class="pb-3">
+                <img src="./img/icon-2.svg" alt="icon-2.svg" />
+              </figure>
+              <div class="sm:h-12">
+                <h5
+                  class="line-clamp-2 text-center font-proxima_nova text-lg font-bold !leading-[1.2] text-black lg:text-xl"
+                >
+                  Sophisticated Detections
+                </h5>
+              </div>
+              <p class="text-center text-base !leading-[1.5] text-primary-500">
+                Whether it's a suspicious process, an abnormal network
+                connection, or other indicators of risk, uberAgent ESA
+                efficiently flags such activities. Each detection translates
+                into an event within your SIEM, e.g., Splunk, ensuring you're alerted
+                to potential threats in near real-time.
+              </p>
+            </div>
+            <div
+              class="flex flex-col items-center justify-center gap-3 sm:max-w-[265px]"
+            >
+              <figure class="pb-3">
+                <img src="./img/icon-3.svg" alt="icon-3.svg" />
+              </figure>
+              <div class="sm:h-12">
+                <h5
+                  class="line-clamp-2 text-center font-proxima_nova text-lg font-bold !leading-[1.2] text-black lg:text-xl"
+                >
+                  Predefined and Customizable Rules
+                </h5>
+              </div>
+              <p class="text-center text-base !leading-[1.5] text-primary-500">
+                Armed with hundreds of predefined rules targeting widespread
+                attack vectors, plus the ability to import Sysmon rules and
+                Sigma signatures, uberAgent ESA is versatile out of the box.
+                Users are encouraged to tailor and expand upon the existing
+                ruleset to fit their unique security landscape.
+              </p>
+            </div>
+            <div
+              class="flex flex-col items-center justify-center gap-3 sm:max-w-[265px]"
+            >
+              <figure class="pb-3">
+                <img src="./img/icon-4.svg" alt="icon-4.svg" />
+              </figure>
+              <div class="sm:h-12">
+                <h5
+                  class="line-clamp-2 text-center font-proxima_nova text-lg font-bold !leading-[1.2] text-black lg:text-xl"
+                >
+                  Sigma Signature Compatibility
+                </h5>
+              </div>
+              <p class="text-center text-base !leading-[1.5] text-primary-500">
+                Meticulously crafted vast limits rules are complemented by third-party
+                rules converted from the Sigma project. All ESA Threat
+                Detection rules are accessible and maintained within the
+                <a href="https://github.com/vastlimits/uberAgent-config/" class="text-base text-secondary-500 transition-all duration-200 hover:text-opacity-70" target="_blank">uberAgent Configuration GitHub repository</a>,
+                ensuring transparency and ease of updates.
+              </p>
+            </div>
+            <div
+              class="flex flex-col items-center justify-center gap-3 sm:max-w-[265px]"
+            >
+              <figure class="pb-3">
+                <img src="./img/icon-5.svg" alt="icon-5.svg" />
+              </figure>
+              <div class="sm:h-12">
+                <h5
+                  class="line-clamp-2 text-center font-proxima_nova text-lg font-bold !leading-[1.2] text-black lg:text-xl"
+                >
+                  MITRE ATT&CK Technique IDs
+                </h5>
+              </div>
+              <p class="text-center text-base !leading-[1.5] text-primary-500">
+                Each rule in uberAgent ESA is enriched with metadata, providing
+                additional context such as MITRE ATT&CK technique IDs, and each
+                event is tagged with a risk score for better assessment and
+                prioritization.
+              </p>
+            </div>
+            <div
+              class="flex flex-col items-center justify-center gap-3 sm:max-w-[265px]"
+            >
+              <figure class="pb-3">
+                <img src="./img/icon-6.svg" alt="icon-6.svg" />
+              </figure>
+              <div class="sm:h-12">
+                <h5
+                  class="line-clamp-2 text-center font-proxima_nova text-lg font-bold !leading-[1.2] text-black lg:text-xl"
+                >
+                  Splunk Integration & Visualization
+                </h5>
+              </div>
+              <p class="text-center text-base !leading-[1.5] text-primary-500">
+                uberAgent comes with pre-built Splunk dashboards that visualize the collected data
+                and allow for interactive queries. uberAgent's Threat Detection events are
+                also automatically available in Splunk Enterprise Security.
+              </p>
+            </div>
+            <div
+              class="flex flex-col items-center justify-center gap-3 sm:max-w-[265px]"
+            >
+              <figure class="pb-3">
+                <img src="./img/icon-7.svg" alt="icon-7.svg" />
+              </figure>
+              <div class="sm:h-12">
+                <h5
+                  class="line-clamp-2 text-center font-proxima_nova text-lg font-bold !leading-[1.2] text-black lg:text-xl"
+                >
+                  uAQL: uberAgent's query language
+                </h5>
+              </div>
+              <p class="text-center text-base !leading-[1.5] text-primary-500">
+                uberAgent ESA's query language (uAQL) is an advanced query
+                language designed for both human readability and machine speed. This
+                synergy of ease-of-use and performance is what makes uberAgent
+                ESA's ruleset both efficient and user-friendly.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section px-4 pt-20 md:pt-20" id="conversion">
+        <div class="mx-auto max-w-screen-xl space-y-8 sm:space-y-12">
+          <div class="mx-auto max-w-[550px]">
+            <h2
+              class="bg-g2 bg-clip-text text-center font-proxima_nova text-[32px] font-extrabold !leading-[1.2] text-transparent sm:text-[44px] lg:text-[54px]"
+            >
+              Conversion Issues: <span id="conversionErrorNumber">18</span>
+            </h2>
+          </div>
+          <div
+            id="errorFilterRow"
+            class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
+          ></div>
+          <div id="backendErrorResults" class="grid gap-12"></div>
+        </div>
+      </section>
+      <section class="section px-4 pb-10 pt-16 md:pt-20" id="about">
+        <div class="mx-auto max-w-screen-xl space-y-8">
+          <div class="space-y-1">
+            <div class="mx-auto max-w-[370px]">
+              <h2
+                class="bg-g2 bg-clip-text text-center font-proxima_nova text-[32px] font-extrabold !leading-[1.2] text-transparent sm:text-[44px] lg:text-[54px]"
+              >
+                What's Sigma?
+              </h2>
+            </div>
+          </div>
+          <div
+            class="bg-brand-gray-light px-4 py-6 shadow-3xl sm:px-10 sm:py-8"
+          >
+            <h3
+              class="text-center font-proxima_nova text-base font-medium text-primary sm:text-lg md:text-xl lg:text-2xl"
+            >
+              Generic Signature Format for SIEM Systems
+            </h3>
+            <p class="text-base text-primary-500 py-10">
+              Sigma is a generic and open signature format that allows you to
+              describe relevant log events in a straightforward manner. It is
+              designed to be both flexible and easy to write, with applicability
+              to any type of log file. <br /><br />
+              The primary goal of the Sigma project is to create a structured
+              way for researchers and analysts to document their detection
+              methods once developed and share them with the community. This
+              facilitates a collaborative approach to threat detection and
+              enhances collective security knowledge.
+              <br /><br />
+              In the world of digital forensics, Sigma's role is analogous to
+              what Snort represents for network traffic analysis, and YARA for
+              file analysis. It is a critical tool for the creation of sharable,
+              scalable, and systematic rule sets for log event analysis.
+              <br /><br />
+              Source:
+              <a
+                href="https://github.com/SigmaHQ/sigma"
+                class="text-base text-secondary-500 transition-all duration-200 hover:text-opacity-70"
+                >Sigma GitHub Repository</a
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+      <section
+        class="relative px-4 pb-16 pt-6 sm:pt-12 md:pb-20 lg:pb-32 lg:pt-16"
+        id="user-agent"
+      >
+        <figure
+          class="absolute right-0 top-1/2 hidden -translate-y-1/2 lg:block"
+        >
+          <img src="./img/circle-two.svg" alt="/circle-two.svg" />
+        </figure>
+        <div
+          class="relative mx-auto max-w-screen-xl space-y-16 sm:space-y-20 lg:space-y-24"
+        >
+          <div class="mx-auto max-w-[510px]">
+            <h2
+              class="bg-g2 bg-clip-text text-center font-proxima_nova text-[32px] font-extrabold !leading-[1.2] text-transparent sm:text-[44px] lg:text-[54px]"
+            >
+              uberAgent Products
+            </h2>
+          </div>
+          <div class="grid grid-cols-1 gap-20 lg:grid-cols-2 lg:gap-8">
+            <div
+              class="space-y-6 bg-white px-4 pb-6 shadow-3xl transition-all duration-200 hover:scale-[1.020] sm:px-12 sm:pb-12"
+            >
+              <figure class="pb-2">
+                <img class="-mt-6" src="./img/image-2.svg" alt="image-2.svg" />
+              </figure>
+              <h3
+                class="font-proxima_nova text-lg font-bold text-primary sm:text-xl lg:text-2xl lg:text-[28px]"
+              >
+                uberAgent UXM
+              </h3>
+              <div class="min-h-[230px]">
+                <p class="text-base text-primary-500">
+                  uberAgent UXM covers all aspects of
+                  <strong> digital employee experience (DEX) </strong>. It
+                  tracks the reliability and performance of any physical or
+                  virtual machine, enabling enterprise IT to provide productive
+                  digital work environments. <br /><br />
+                  uberAgent is more than just monitoring. It is an indispensable
+                  tool for all phases of the IT lifecycle, from analysis to
+                  design, implementation, operations, and troubleshooting.
+                  uberAgent helps IT pros understand end-users without invading
+                  their privacy.
                 </p>
+              </div>
 
-                <h2>Rule Provenance and Storage</h2>
-                <p>uberAgent ESA benefits from a dual-source rule pool: meticulously crafted vast limits rules and
-                    converted third-party rules, such as those from the Sigma project. All Threat Detection rules are
-                    accessible and maintained within the uberAgent Configuration GitHub repository, ensuring
-                    transparency and ease of updates.</p>
-
-                <h2>Enhanced with Metadata</h2>
-                <p>Each rule in uberAgent ESA is enriched with metadata, providing additional context such as MITRE
-                    ATT&CK technique IDs, and each event is tagged with a risk score for better assessment and
-                    prioritization.</p>
-
-                <h2>Seamless Integration and Visualization</h2>
-                <p>The events detected by uberAgent ESA are not just logged but also visualized within the Threat
-                    Detection Events dashboard. Integrated within the uberAgent_ESA Splunk searchhead app, this feature
-                    provides a comprehensive and actionable overview of security events.</p>
-
-                <h2>uAQL: uberAgent's query language</h2>
-                <p>The foundation of Threat Detection's effectiveness is uAQL (uberAgent Query Language), an advanced
-                    yet readable query language designed for both human clarity and machine speed. This synergy of
-                    ease-of-use and performance is what makes uberAgent ESA's ruleset both robust and user-friendly.</p>
-
-                <p class="card-source">Source: <a href="https://uberagent.com" target="_blank">uberagent.com</a></p>
+              <ul
+                class="grid grid-cols-1 gap-4 pt-1 sm:grid-cols-2 lg:pr-4 xl:pr-10"
+              >
+                <li class="flex items-start gap-3 text-base text-primary-500">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 0C5.36766 0 0 5.36719 0 12C0 18.6323 5.36719 24 12 24C18.6323 24 24 18.6328 24 12C24 5.36766 18.6328 0 12 0ZM9.14466 17.062C9.14466 17.062 4.99988 12.9156 4.70194 12.6182C4.03917 11.9554 4.03917 10.8769 4.70194 10.2147C5.36639 9.55027 6.44095 9.55027 7.10541 10.2147L9.78872 12.898C10.1224 13.2317 10.6639 13.2294 10.9947 12.894L16.8864 6.91739C17.5486 6.24558 18.6306 6.24103 19.2984 6.90891C19.956 7.56656 19.96 8.64056 19.3069 9.30333C12.9088 15.7949 11.6937 17.0615 11.6937 17.0615C10.9913 17.7638 9.84764 17.7645 9.14466 17.062Z"
+                      fill="#43B7C8"
+                    />
+                  </svg>
+                  <span>Application reliability</span>
+                </li>
+                <li class="flex items-start gap-3 text-base text-primary-500">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 0C5.36766 0 0 5.36719 0 12C0 18.6323 5.36719 24 12 24C18.6323 24 24 18.6328 24 12C24 5.36766 18.6328 0 12 0ZM9.14466 17.062C9.14466 17.062 4.99988 12.9156 4.70194 12.6182C4.03917 11.9554 4.03917 10.8769 4.70194 10.2147C5.36639 9.55027 6.44095 9.55027 7.10541 10.2147L9.78872 12.898C10.1224 13.2317 10.6639 13.2294 10.9947 12.894L16.8864 6.91739C17.5486 6.24558 18.6306 6.24103 19.2984 6.90891C19.956 7.56656 19.96 8.64056 19.3069 9.30333C12.9088 15.7949 11.6937 17.0615 11.6937 17.0615C10.9913 17.7638 9.84764 17.7645 9.14466 17.062Z"
+                      fill="#43B7C8"
+                    />
+                  </svg>
+                  <span>Network diagnostics</span>
+                </li>
+                <li class="flex items-start gap-3 text-base text-primary-500">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 0C5.36766 0 0 5.36719 0 12C0 18.6323 5.36719 24 12 24C18.6323 24 24 18.6328 24 12C24 5.36766 18.6328 0 12 0ZM9.14466 17.062C9.14466 17.062 4.99988 12.9156 4.70194 12.6182C4.03917 11.9554 4.03917 10.8769 4.70194 10.2147C5.36639 9.55027 6.44095 9.55027 7.10541 10.2147L9.78872 12.898C10.1224 13.2317 10.6639 13.2294 10.9947 12.894L16.8864 6.91739C17.5486 6.24558 18.6306 6.24103 19.2984 6.90891C19.956 7.56656 19.96 8.64056 19.3069 9.30333C12.9088 15.7949 11.6937 17.0615 11.6937 17.0615C10.9913 17.7638 9.84764 17.7645 9.14466 17.062Z"
+                      fill="#43B7C8"
+                    />
+                  </svg>
+                  <span>Browser usage</span>
+                </li>
+                <li class="flex items-start gap-3 text-base text-primary-500">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 0C5.36766 0 0 5.36719 0 12C0 18.6323 5.36719 24 12 24C18.6323 24 24 18.6328 24 12C24 5.36766 18.6328 0 12 0ZM9.14466 17.062C9.14466 17.062 4.99988 12.9156 4.70194 12.6182C4.03917 11.9554 4.03917 10.8769 4.70194 10.2147C5.36639 9.55027 6.44095 9.55027 7.10541 10.2147L9.78872 12.898C10.1224 13.2317 10.6639 13.2294 10.9947 12.894L16.8864 6.91739C17.5486 6.24558 18.6306 6.24103 19.2984 6.90891C19.956 7.56656 19.96 8.64056 19.3069 9.30333C12.9088 15.7949 11.6937 17.0615 11.6937 17.0615C10.9913 17.7638 9.84764 17.7645 9.14466 17.062Z"
+                      fill="#43B7C8"
+                    />
+                  </svg>
+                  <span>OS performance</span>
+                </li>
+                <li class="flex items-start gap-3 text-base text-primary-500">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 0C5.36766 0 0 5.36719 0 12C0 18.6323 5.36719 24 12 24C18.6323 24 24 18.6328 24 12C24 5.36766 18.6328 0 12 0ZM9.14466 17.062C9.14466 17.062 4.99988 12.9156 4.70194 12.6182C4.03917 11.9554 4.03917 10.8769 4.70194 10.2147C5.36639 9.55027 6.44095 9.55027 7.10541 10.2147L9.78872 12.898C10.1224 13.2317 10.6639 13.2294 10.9947 12.894L16.8864 6.91739C17.5486 6.24558 18.6306 6.24103 19.2984 6.90891C19.956 7.56656 19.96 8.64056 19.3069 9.30333C12.9088 15.7949 11.6937 17.0615 11.6937 17.0615C10.9913 17.7638 9.84764 17.7645 9.14466 17.062Z"
+                      fill="#43B7C8"
+                    />
+                  </svg>
+                  <span>Citrix optimization</span>
+                </li>
+                <li class="flex items-start gap-3 text-base text-primary-500">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 0C5.36766 0 0 5.36719 0 12C0 18.6323 5.36719 24 12 24C18.6323 24 24 18.6328 24 12C24 5.36766 18.6328 0 12 0ZM9.14466 17.062C9.14466 17.062 4.99988 12.9156 4.70194 12.6182C4.03917 11.9554 4.03917 10.8769 4.70194 10.2147C5.36639 9.55027 6.44095 9.55027 7.10541 10.2147L9.78872 12.898C10.1224 13.2317 10.6639 13.2294 10.9947 12.894L16.8864 6.91739C17.5486 6.24558 18.6306 6.24103 19.2984 6.90891C19.956 7.56656 19.96 8.64056 19.3069 9.30333C12.9088 15.7949 11.6937 17.0615 11.6937 17.0615C10.9913 17.7638 9.84764 17.7645 9.14466 17.062Z"
+                      fill="#43B7C8"
+                    />
+                  </svg>
+                  <span>Web app troubleshooting</span>
+                </li>
+              </ul>
+              <div class="pt-2">
+                <a
+                  target="_blank"
+                  href="https://uberagent.com/docs/uberagent/latest/about-uberagent/products-uxm-esa/"
+                  class="inline-block bg-g1 bg-[length:200%_auto] px-8 py-3 text-base font-black text-white transition-all duration-200 hover:bg-[right_center]"
+                  >More Info</a
+                >
+              </div>
             </div>
+            <div
+              class="space-y-6 bg-white px-4 pb-6 shadow-3xl transition-all duration-200 hover:scale-[1.020] sm:px-12 sm:pb-12"
+            >
+              <figure class="pb-2">
+                <img class="-mt-6" src="./img/image-3.svg" alt="image-3.svg" />
+              </figure>
+              <h3
+                class="font-proxima_nova text-lg font-bold text-primary sm:text-xl lg:text-2xl lg:text-[28px]"
+              >
+                uberAgent ESA
+              </h3>
+              <div class="min-h-[230px]">
+                <p class="text-base text-primary-500">
+                  uberAgent ESA adds
+                  <strong>deep security visibility</strong> to the rich DEX and
+                  performance metrics collected by uberAgent UXM. With its open
+                  architecture, uberAgent ESA is the ideal complement to EDR
+                  products. <br /><br />
+                  uberAgent ESA and uberAgent UXM are perfectly integrated. Both
+                  products combined require only a single agent, guaranteeing
+                  the smallest possible footprint on the endpoint.
+                </p>
+              </div>
+              <ul
+                class="grid grid-cols-1 gap-4 pt-1 sm:grid-cols-2 lg:pr-4 xl:pr-10"
+              >
+                <li class="flex items-start gap-3 text-base text-primary-500">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 0C5.36766 0 0 5.36719 0 12C0 18.6323 5.36719 24 12 24C18.6323 24 24 18.6328 24 12C24 5.36766 18.6328 0 12 0ZM9.14466 17.062C9.14466 17.062 4.99988 12.9156 4.70194 12.6182C4.03917 11.9554 4.03917 10.8769 4.70194 10.2147C5.36639 9.55027 6.44095 9.55027 7.10541 10.2147L9.78872 12.898C10.1224 13.2317 10.6639 13.2294 10.9947 12.894L16.8864 6.91739C17.5486 6.24558 18.6306 6.24103 19.2984 6.90891C19.956 7.56656 19.96 8.64056 19.3069 9.30333C12.9088 15.7949 11.6937 17.0615 11.6937 17.0615C10.9913 17.7638 9.84764 17.7645 9.14466 17.062Z"
+                      fill="#43B7C8"
+                    />
+                  </svg>
+                  <span>Insecure configurations</span>
+                </li>
+                <li class="flex items-start gap-3 text-base text-primary-500">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 0C5.36766 0 0 5.36719 0 12C0 18.6323 5.36719 24 12 24C18.6323 24 24 18.6328 24 12C24 5.36766 18.6328 0 12 0ZM9.14466 17.062C9.14466 17.062 4.99988 12.9156 4.70194 12.6182C4.03917 11.9554 4.03917 10.8769 4.70194 10.2147C5.36639 9.55027 6.44095 9.55027 7.10541 10.2147L9.78872 12.898C10.1224 13.2317 10.6639 13.2294 10.9947 12.894L16.8864 6.91739C17.5486 6.24558 18.6306 6.24103 19.2984 6.90891C19.956 7.56656 19.96 8.64056 19.3069 9.30333C12.9088 15.7949 11.6937 17.0615 11.6937 17.0615C10.9913 17.7638 9.84764 17.7645 9.14466 17.062Z"
+                      fill="#43B7C8"
+                    />
+                  </svg>
+                  <span>DFIR</span>
+                </li>
+                <li class="flex items-start gap-3 text-base text-primary-500">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 0C5.36766 0 0 5.36719 0 12C0 18.6323 5.36719 24 12 24C18.6323 24 24 18.6328 24 12C24 5.36766 18.6328 0 12 0ZM9.14466 17.062C9.14466 17.062 4.99988 12.9156 4.70194 12.6182C4.03917 11.9554 4.03917 10.8769 4.70194 10.2147C5.36639 9.55027 6.44095 9.55027 7.10541 10.2147L9.78872 12.898C10.1224 13.2317 10.6639 13.2294 10.9947 12.894L16.8864 6.91739C17.5486 6.24558 18.6306 6.24103 19.2984 6.90891C19.956 7.56656 19.96 8.64056 19.3069 9.30333C12.9088 15.7949 11.6937 17.0615 11.6937 17.0615C10.9913 17.7638 9.84764 17.7645 9.14466 17.062Z"
+                      fill="#43B7C8"
+                    />
+                  </svg>
+                  <span>Data exfiltration</span>
+                </li>
+                <li class="flex items-start gap-3 text-base text-primary-500">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 0C5.36766 0 0 5.36719 0 12C0 18.6323 5.36719 24 12 24C18.6323 24 24 18.6328 24 12C24 5.36766 18.6328 0 12 0ZM9.14466 17.062C9.14466 17.062 4.99988 12.9156 4.70194 12.6182C4.03917 11.9554 4.03917 10.8769 4.70194 10.2147C5.36639 9.55027 6.44095 9.55027 7.10541 10.2147L9.78872 12.898C10.1224 13.2317 10.6639 13.2294 10.9947 12.894L16.8864 6.91739C17.5486 6.24558 18.6306 6.24103 19.2984 6.90891C19.956 7.56656 19.96 8.64056 19.3069 9.30333C12.9088 15.7949 11.6937 17.0615 11.6937 17.0615C10.9913 17.7638 9.84764 17.7645 9.14466 17.062Z"
+                      fill="#43B7C8"
+                    />
+                  </svg>
+                  <span>Compliance</span>
+                </li>
+                <li class="flex items-start gap-3 text-base text-primary-500">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 0C5.36766 0 0 5.36719 0 12C0 18.6323 5.36719 24 12 24C18.6323 24 24 18.6328 24 12C24 5.36766 18.6328 0 12 0ZM9.14466 17.062C9.14466 17.062 4.99988 12.9156 4.70194 12.6182C4.03917 11.9554 4.03917 10.8769 4.70194 10.2147C5.36639 9.55027 6.44095 9.55027 7.10541 10.2147L9.78872 12.898C10.1224 13.2317 10.6639 13.2294 10.9947 12.894L16.8864 6.91739C17.5486 6.24558 18.6306 6.24103 19.2984 6.90891C19.956 7.56656 19.96 8.64056 19.3069 9.30333C12.9088 15.7949 11.6937 17.0615 11.6937 17.0615C10.9913 17.7638 9.84764 17.7645 9.14466 17.062Z"
+                      fill="#43B7C8"
+                    />
+                  </svg>
+                  <span>Risky behavior</span>
+                </li>
+                <li class="flex items-start gap-3 text-base text-primary-500">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 0C5.36766 0 0 5.36719 0 12C0 18.6323 5.36719 24 12 24C18.6323 24 24 18.6328 24 12C24 5.36766 18.6328 0 12 0ZM9.14466 17.062C9.14466 17.062 4.99988 12.9156 4.70194 12.6182C4.03917 11.9554 4.03917 10.8769 4.70194 10.2147C5.36639 9.55027 6.44095 9.55027 7.10541 10.2147L9.78872 12.898C10.1224 13.2317 10.6639 13.2294 10.9947 12.894L16.8864 6.91739C17.5486 6.24558 18.6306 6.24103 19.2984 6.90891C19.956 7.56656 19.96 8.64056 19.3069 9.30333C12.9088 15.7949 11.6937 17.0615 11.6937 17.0615C10.9913 17.7638 9.84764 17.7645 9.14466 17.062Z"
+                      fill="#43B7C8"
+                    />
+                  </svg>
+                  <span>Lateral movement</span>
+                </li>
+              </ul>
+              <div class="pt-2">
+                <a
+                  target="_blank"
+                  href="https://uberagent.com/docs/uberagent/latest/about-uberagent/products-uxm-esa/"
+                  class="inline-block bg-g1 bg-[length:200%_auto] px-8 py-3 text-base font-black text-white transition-all duration-200 hover:bg-[right_center]"
+                  >More Info</a
+                >
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Fields causing conversion issues: <span id="conversionErrorNumber" class="card-title-number"></span></h2>
+      </section>
+    </main>
+    <footer class="bg-brand-gray-light px-4 py-10 sm:py-16">
+      <div class="mx-auto max-w-screen-xl">
+        <div
+          class="flex flex-col-reverse items-center justify-between gap-5 lg:flex-row"
+        >
+          <p class="text-base text-primary-500">© Copyright vast limits GmbH</p>
+          <div class="flex items-center justify-center">
+            <div
+              class="flex flex-wrap items-center justify-center gap-4 sm:gap-6"
+            >
+              <h4 class="text-xl font-bold text-primary lg:text-2xl">
+                Follow us
+              </h4>
+              <ul class="flex items-center gap-5 sm:gap-7">
+                <li>
+                  <a href="https://www.facebook.com/vast.limits" target="_blank"
+                    ><img
+                      class="transition-all duration-200 hover:opacity-60"
+                      src="./img/facebook.svg"
+                      alt="facebook.svg"
+                  /></a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/company/vast-limits/posts/?feedView=all"
+                    target="_blank"
+                    ><img
+                      class="transition-all duration-200 hover:opacity-60"
+                      src="./img/linkedin.svg"
+                      alt="linkedin.svg"
+                  /></a>
+                </li>
+                <li>
+                  <a
+                    href="https://twitter.com/i/flow/login?redirect_after_login=%2FuberAgentApp"
+                    target="_blank"
+                    ><img
+                      class="transition-all duration-200 hover:opacity-60"
+                      src="./img/twitter.svg"
+                      alt="twitter.svg"
+                  /></a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.xing.com/pages/vastlimitsgmbh"
+                    target="_blank"
+                    ><img
+                      class="transition-all duration-200 hover:opacity-60"
+                      src="./img/unknown.svg"
+                      alt="unknown.svg"
+                  /></a>
+                </li>
+                <li>
+                  <a href="https://www.youtube.com/c/Vastlimits" target="_blank"
+                    ><img
+                      class="transition-all duration-200 hover:opacity-60"
+                      src="./img/youtube.svg"
+                      alt="youtube.svg"
+                  /></a>
+                </li>
+                <li>
+                  <a href="https://uberagent.com/feed/" target="_blank"
+                    ><img
+                      class="transition-all duration-200 hover:opacity-60"
+                      src="./img/rss.svg"
+                      alt="rss.svg"
+                  /></a>
+                </li>
+              </ul>
             </div>
-            <div class="filter-content">
-                <div class="grid" id="errorFilterRow">
-                </div>
-            </div>
-            <div id="backendErrorResults">
-            </div>
+          </div>
+          <div class="flex justify-end">
+            <ul class="flex items-center gap-8">
+              <li>
+                <a
+                  target="_blank"
+                  href="https://uberagent.com/imprint/"
+                  class="text-base text-primary-500 transition-all duration-200 hover:text-secondary-500"
+                  >Imprint</a
+                >
+              </li>
+              <li>
+                <a
+                  target="_blank"
+                  href="https://uberagent.com/imprint/privacy-policy/"
+                  class="text-base text-primary-500 transition-all duration-200 hover:text-secondary-500"
+                  >Privacy policy</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">What's Sigma?</h2>
-            </div>
-            <div class="card-content">
-                <h2>Sigma - Generic Signature Format for SIEM Systems</h2>
-                <p>Sigma is a generic and open signature format that allows you to describe relevant log events in a
-                    straightforward manner. It is designed to be both flexible and easy to write, with applicability to
-                    any type of log file.</p>
-                <p>The primary goal of the Sigma project is to create a structured way for researchers and analysts to
-                    document their detection methods once developed and share them with the community. This facilitates
-                    a collaborative approach to threat detection and enhances collective security knowledge.</p>
-                <p>In the world of digital forensics, Sigma's role is analogous to what Snort represents for network
-                    traffic analysis, and YARA for file analysis. It is a critical tool for the creation of sharable,
-                    scalable, and systematic rule sets for log event analysis.</p>
-                <p class="card-source">Source: <a href="https://github.com/SigmaHQ/sigma" target="_blank">Sigma GitHub Repository</a></p>
-            </div>
-        </div>
-
-
-    </div>
-
-    <script type="text/javascript" src="js/app.js"></script>
-</body>
-
+      </div>
+    </footer>
+    <script src="./js/app.js"></script>
+  </body>
 </html>

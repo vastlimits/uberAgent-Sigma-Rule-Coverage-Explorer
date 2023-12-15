@@ -1,3 +1,44 @@
+// for burger menu
+let burger = document.querySelector("#burger-menu-button");
+let closes = document.querySelectorAll(".close");
+let navbar = document.querySelector("#navbar"); 
+
+burger.addEventListener("click", () => {
+  navbar.classList.toggle("active");  
+}); 
+
+if(closes.length > 0){
+closes.forEach(close => {
+  close.addEventListener("click", () => {
+    navbar.classList.remove("active");   
+  });
+});
+}
+
+window.addEventListener('scroll', function() {
+  const sections = document.querySelectorAll('.section');
+  const navLinks = document.querySelectorAll('#menus a');
+
+ 
+  sections.forEach(function (section, index) {
+    const top = section.offsetTop - 100;
+    const bottom = top + section.offsetHeight;
+
+    if (window.scrollY >= top && window.scrollY < bottom) {
+      navLinks.forEach(function (link) {
+        link.parentElement.classList.remove('active');
+      });
+      navLinks[index].parentElement.classList.add('active');
+    } 
+  });
+  if (window.scrollY >= 10 && window.scrollY <= 600) { 
+    navLinks.forEach(function (link) {
+      link.parentElement.classList.remove('active');
+    });
+  }
+});
+ 
+
 let AppModel = {}
 
 function createSelectFilter(classNameColumn, filterTitle, filterOptions, id, skipAny) {
@@ -6,13 +47,14 @@ function createSelectFilter(classNameColumn, filterTitle, filterOptions, id, ski
     filterItem.classList = classNameColumn;
 
     const wrap = document.createElement('div');
-    wrap.classList.add('row-wrap');
+    wrap.classList.add('space-y-1');
 
     const filterItemLabel = document.createElement('div');
-    filterItemLabel.classList = "filter-item-label";
+    filterItemLabel.classList = "block text-base font-bold text-primary-500";
     filterItemLabel.innerText = filterTitle;
 
-    const select = document.createElement('select');
+  const select = document.createElement('select');
+  select.classList = 'w-full appearance-none border border-brand-gray-light bg-brand-gray-light bg-[url(../img/triangle.svg)] bg-[right_12px_center] bg-no-repeat px-6 py-2.5 text-base text-brand-gray transition-[border] duration-100 focus:border-b-2 focus:border-b-tertiary focus:outline-none'
     select.id = id;
     if (!skipAny)
         select.innerHTML = `<option value="">Any ${filterTitle}</option>`;
@@ -23,6 +65,7 @@ function createSelectFilter(classNameColumn, filterTitle, filterOptions, id, ski
 
     select.addEventListener('change', updateResults);
     select.addEventListener('change', updateErrorResults);
+    select.addEventListener('change', loadAccordion);
 
     wrap.appendChild(filterItemLabel);
     wrap.appendChild(select);
@@ -52,6 +95,7 @@ function initializeFilters() {
 
     const errorFilterRow = document.getElementById('errorFilterRow');
     errorFilterRow.appendChild(createSelectFilter('grid-col-1', 'Backend', Object.keys(AppModel.status), 'backendFilter', true));
+  
 }
 
 function countCoverage(backendIds, rules) {
@@ -67,11 +111,11 @@ function countCoverage(backendIds, rules) {
 function createRow(textTitle, textContent) {
 
     const title = document.createElement('h3');
-    title.classList.add('row-title');
+    title.classList = "text-center font-proxima_nova text-lg font-bold text-primary-500 lg:text-xl";
     title.textContent = textTitle;
 
     const content = document.createElement('p');
-    content.classList.add('row-description');
+    content.classList = 'text-center text-base text-primary-500';
     content.textContent = textContent;
 
     return { title, content  };
@@ -80,25 +124,42 @@ function createRow(textTitle, textContent) {
 function createRowWithProgressBar(backendName, coverageCount, totalRules) {
     const coveragePercent = (coverageCount / totalRules) * 100;
 
-    const wrap = document.createElement('div');
-    wrap.classList.add('row-wrap');
-
+    const wrap = document.createElement('div'); 
+  wrap.classList = 'transition-all duration-200';
     const { title, content } = createRow(backendName, `${coverageCount} of ${totalRules}`);
 
+    const titleDesContainer = document.createElement('div');
+  titleDesContainer.classList = 'border-t border-primary-500 pb-4 pt-4';
+  
+    const progressOverlay = document.createElement('div');
+    progressOverlay.classList = 'absolute bottom-0 left-0 right-0 w-full bg-secondary-500 ';
+    progressOverlay.style.height = `${coveragePercent.toFixed(2)}%`;
+  
+
+    const Tooltip = document.createElement('div');
+    Tooltip.classList = 'absolute bottom-0 left-full  -mb-2 ml-3 w-[110px] font-proxima_nova text-xl font-bold text-secondary-500 lg:text-[28px]';
+    if (coverageCount > 0) {
+      Tooltip.innerHTML = `${coveragePercent.toFixed(2)}%`
+      }
+    Tooltip.style.bottom = `${coveragePercent.toFixed(2)}%`;
+  
+  
     const progressBarContainer = document.createElement('div');
-    progressBarContainer.classList.add('progress');
+    progressBarContainer.classList = "pb-5 pl-10";
 
     const progressBar = document.createElement('div');
-    progressBar.classList.add('progress-bar', 'progress-bar-primary');
-    progressBar.style.width = `${coveragePercent.toFixed(2)}%`;
-    if (coverageCount > 0) {
-        progressBar.textContent = `${coveragePercent.toFixed(2)}%`;
-    }
+    progressBar.classList = 'relative h-[100px] w-[62px] bg-primary-500 ';
+    
 
-    progressBarContainer.appendChild(progressBar);
-    wrap.appendChild(title);
-    wrap.appendChild(content);
+  progressBarContainer.appendChild(progressBar);
+
+  progressBar.appendChild(progressOverlay);
+  progressBar.appendChild(Tooltip);
+  
     wrap.appendChild(progressBarContainer);
+    titleDesContainer.appendChild(title);
+    titleDesContainer.appendChild(content);
+    wrap.appendChild(titleDesContainer);
 
     return wrap;
 }
@@ -106,7 +167,8 @@ function createRowWithProgressBar(backendName, coverageCount, totalRules) {
 function updateResults() {
     const backends = AppModel.status;
     const backendResults = document.getElementById('backendResults');
-    backendResults.innerHTML = '';
+  backendResults.innerHTML = '';
+
 
     const statusFilterValue = document.getElementById('statusFilter').value;
     const levelFilterValue = document.getElementById('levelFilter').value;
@@ -121,15 +183,34 @@ function updateResults() {
         return statusMatch && levelMatch && categoryMatch && productMatch;
     });
 
-    Object.entries(backends).forEach(([backendName, backendIds]) => {
+  Object.entries(backends).forEach(([backendName, backendIds]) => { 
         const coverageCount = countCoverage(backendIds, filteredRules);
         if (filteredRules.length === 0) {
-            const wrap = document.createElement('div');
-            wrap.classList.add('row-wrap');
-            const emptyRow = createRow(backendName, 'No results available.');
-            wrap.appendChild(emptyRow.title);
-            wrap.appendChild(emptyRow.content);
-            backendResults.appendChild(wrap);
+          const wrap = document.createElement('div');  
+
+          const titleDesContainer = document.createElement('div');
+          titleDesContainer.classList = 'border-t border-primary-500 pb-4 pt-4'; 
+          
+          const imgTitleContainer = document.createElement('div');
+          imgTitleContainer.classList = 'flex flex-col items-center justify-center gap-2 pb-4';
+
+          const imgTitle = document.createElement('h3');
+          imgTitle.classList = 'text-center font-proxima_nova text-xl font-bold text-secondary-500 lg:text-[28px]';
+          imgTitle.innerHTML = 'No results available';
+
+            const img = document.createElement('img');
+            img.src = "./img/no-result.svg"
+            img.alt = "no-result.svg"
+       
+          const emptyRow = createRow(backendName, `${coverageCount} of ${filteredRules.length}`);
+          
+            titleDesContainer.appendChild(emptyRow.title);
+            titleDesContainer.appendChild(emptyRow.content);
+            imgTitleContainer.appendChild(img);
+            imgTitleContainer.appendChild(imgTitle);
+            wrap.appendChild(imgTitleContainer);
+            wrap.appendChild(titleDesContainer);
+            backendResults.appendChild(wrap); 
             return;
         }
 
@@ -139,8 +220,7 @@ function updateResults() {
 }
 
 
-function updateErrorResults() {
-
+function updateErrorResults() { 
     const errors = AppModel.errors;
     const backendErrorResults = document.getElementById('backendErrorResults');
     const conversionErrorNumber = document.getElementById('conversionErrorNumber');
@@ -158,50 +238,103 @@ function updateErrorResults() {
     // Right now 'missing_field' error is the only error we care about as displaying
     // not yet supported log sources makes no sense here.
 
-    if (!('missing_field' in backendErrors))
-        return;
+      if (!('missing_field' in backendErrors))
+          return;
 
-    const backendMissingFields = backendErrors['missing_field'];
-    let count = 0;
-    Object.entries(backendMissingFields).forEach(([field, value]) => {
+      const backendMissingFields = backendErrors['missing_field'];
+      let count = 0;
+      Object.entries(backendMissingFields).forEach(([field, value]) => {
 
         count++;
 
         const wrap = document.createElement('div');
-        wrap.classList.add('row-wrap');
+        wrap.classList = 'space-y-4 px-4 py-5 shadow-3xl odd:bg-white even:bg-brand-gray-light sm:space-y-6 sm:px-8 sm:py-8';;
+        let htmlContent = `<div
+              class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 lg:gap-8"
+            >
+              <div class="space-y-1 sm:space-y-2">
+                <h5
+                  class="font-proxima_nova text-lg font-bold text-primary-500 lg:text-xl"
+                >
+                  Missing Field
+                </h5>
+                <h3
+                  class="font-proxima_nova break-all text-lg font-bold text-secondary-500 sm:text-xl lg:text-2xl lg:text-[28px]"
+                >
+                  ${field}
+                </h3>
+              </div>
+              <div class="space-y-1 sm:space-y-2">
+                <h5
+                  class="font-proxima_nova text-lg font-bold text-primary-500 lg:text-xl"
+                >
+                  Categories
+                </h5>
+                <h3
+                  class="font-proxima_nova text-lg font-bold text-secondary-500 sm:text-xl lg:text-2xl lg:text-[28px]"
+                >
+                  ${value['logsource.categories'].join(', ')}
+                </h3>
+              </div>
+              <div class="space-y-1 sm:space-y-2 lg:pl-10">
+                <h5
+                  class="font-proxima_nova text-lg font-bold text-primary-500 lg:text-xl"
+                >
+                  Products
+                </h5>
+                <h3
+                  class="font-proxima_nova text-lg font-bold text-secondary-500 sm:text-xl lg:text-2xl lg:text-[28px]"
+                >
+                  ${value['logsource.products'].join(', ')}
+                </h3>
+              </div>
+              <div class="space-y-1 sm:space-y-2 lg:pl-10">
+                <h5
+                  class="font-proxima_nova text-lg font-bold text-primary-500 lg:text-xl"
+                >
+                  Rules
+                </h5>
+                <h3
+                  class="font-proxima_nova text-lg font-bold text-secondary-500 sm:text-xl lg:text-2xl lg:text-[28px]"
+                >
+                 ${value.refs.length}
+                </h3>
+              </div>
+            </div>
+            <div class="group w-full">
+              <button
+                type="button"
+                class="accordion-header flex w-full items-center justify-between border-b border-primary-500 px-1.5 py-2 font-proxima_nova text-lg font-bold text-primary-500 group-[.open]:border-b-0 sm:px-4 lg:text-xl"
+              >
+                <span>See rules</span>
+                <img
+                  class="transition-all group-[.open]:rotate-180"
+                  src="./img/triangle.svg"
+                  alt="triangle.svg"
+                />
+              </button>
+              <div
+                class="max-h-0 overflow-hidden transition-all duration-200"
+              >
+        
+                <ul class="grid gap-1 pt-2 sm:px-4" id="list-items">`;
+                  for (var i = 0; i < value.refs.length; ++i) {
+                    const rule = AppModel.rules.find((rule) => { return rule.id == value.refs[i]; });
+                    const ruleLine = document.createElement('a');
+                    ruleLine.classList = 'text-base text-secondary-500 hover:opacity-70 transition-all duration-200';
+                    ruleLine.href = rule.file.replace('../sigma', 'https://github.com/SigmaHQ/sigma/tree/master');
+                    ruleLine.target = "_blank";
+                    ruleLine.textContent = rule.title;
+         
+                    htmlContent += `<li>${ruleLine.outerHTML}</li>`;
+                }
+               htmlContent +=`</ul>
+              </div>
+            </div>`
+        wrap.innerHTML = htmlContent;
 
-        const itemField = createRow('Missing Field', field);
-        const itemCategories = createRow('Categories', value['logsource.categories'].join(', '));
-        const itemProducts = createRow('Products', value['logsource.products'].join(', '));
-        const itemRules = createRow('Rules', value.refs.length);
+      
 
-        itemField.content.classList.add('row-description-primary');
-        itemCategories.content.classList.add('row-description-primary');
-        itemProducts.content.classList.add('row-description-primary');
-        itemRules.content.classList.add('row-description-primary');
-
-        wrap.appendChild(itemField.title);
-        wrap.appendChild(itemField.content);
-        wrap.appendChild(itemCategories.title);
-        wrap.appendChild(itemCategories.content);
-        wrap.appendChild(itemProducts.title);
-        wrap.appendChild(itemProducts.content);
-        wrap.appendChild(itemRules.title);
-        wrap.appendChild(itemRules.content);
-
-        for (var i = 0; i < value.refs.length; ++i) {
-            const rule = AppModel.rules.find((rule) => { return rule.id == value.refs[i]; });
-            const ruleLine = document.createElement('a');
-            ruleLine.href = rule.file.replace('../sigma', 'https://github.com/SigmaHQ/sigma/tree/master');
-            ruleLine.target = "_blank";
-            ruleLine.textContent = rule.title;
-
-            const ruleWrap = document.createElement('p');
-            ruleWrap.classList.add('row-description');
-            ruleWrap.appendChild(ruleLine);
-
-            wrap.appendChild(ruleWrap);
-        }
         backendErrorResults.appendChild(wrap);
     });
 
@@ -209,18 +342,53 @@ function updateErrorResults() {
 }
 
 window.onload = function () {
-    fetch('/data/model.json')
+    fetch('./data/model.json')
         .then(response => {
             if (!response.ok) {
                 alert('Could not load model.json!');
             }
+          
             return response.json();
         })
-        .then(data => {
-            AppModel = data;
-            initializeFilters();
-            updateResults();
-            updateErrorResults();
+      .then(data => { 
+          AppModel = data;
+          initializeFilters();
+          updateResults();
+          updateErrorResults();
+          loadAccordion();
+       
         })
         .catch(_ => { });
+}
+
+
+
+function loadAccordion() {
+  
+const accordions = document.querySelectorAll(".accordion-header");
+ 
+Accordion(accordions);
+
+
+function Accordion(headers) {
+  if (headers.length > 0) {  
+    for (var i = 0; i < headers.length; i++) {
+      headers[i].addEventListener("click", openCurrAccordion);
+    }
+  }
+  function openCurrAccordion(e) {
+    for (var i = 0; i < headers.length; i++) {
+      var parent = headers[i].parentElement;
+      var article = headers[i].nextElementSibling;
+  
+      if (this === headers[i] && !parent.classList.contains("open")) {
+        parent.classList.add("open");
+        article.style.maxHeight = article.scrollHeight + "px";
+      } else {
+        parent.classList.remove("open");
+        article.style.maxHeight = "0px";
+      }
+    }
+  }
+}
 }
