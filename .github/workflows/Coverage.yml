@@ -10,19 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout sigma-rule-coverage
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         path: sigma-rule-coverage
 
     - name: Checkout sigma-rule-coverage (gh-phages)
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         token: ${{ secrets.RULE_COVERAGE_SVC_PAT }}
         ref: gh-pages
         path: sigma-rule-coverage-gh-pages
 
     - name: Checkout sigma
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: SigmaHQ/sigma
         path: sigma
@@ -35,7 +35,7 @@ jobs:
     - name: Install Poetry
       uses: abatilo/actions-poetry@v2.0.0
       with:
-        poetry-version: "1.4.2"
+        poetry-version: "1.7.1"
 
     - name: Install
       working-directory: sigma-rule-coverage
