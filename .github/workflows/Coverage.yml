@@ -17,7 +17,7 @@ jobs:
     - name: Checkout sigma-rule-coverage (gh-phages)
       uses: actions/checkout@v4
       with:
-        token: ${{ secrets.RULE_COVERAGE_SVC_PAT }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         ref: gh-pages
         path: sigma-rule-coverage-gh-pages
 
