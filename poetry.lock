@@ -252,13 +252,13 @@ requests = ">=2.31,<3.0"
 
 [[package]]
 name = "pysigma-backend-uberagent"
-version = "0.3.67"
+version = "0.3.68"
 description = "pySigma uAQL backend"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "pysigma_backend_uberagent-0.3.67-py3-none-any.whl", hash = "sha256:4940faeb074ae9873f122ec806e582804d5c4c543d0831ca9cd0b221f8798265"},
-    {file = "pysigma_backend_uberagent-0.3.67.tar.gz", hash = "sha256:8caf235f9a3cf18f921417fc15f3980f01fee26c62b187aa29f2438227e8115f"},
+    {file = "pysigma_backend_uberagent-0.3.68-py3-none-any.whl", hash = "sha256:b58dd3e0c3afce4362777464ac12a18f00b646b2c76819dcd4efb5703693983c"},
+    {file = "pysigma_backend_uberagent-0.3.68.tar.gz", hash = "sha256:0765feed028e69a5b386e7bc60ec1edf7e8efd6150e8c4d646cc8d415ef650c2"},
 ]
 
 [package.dependencies]
@@ -367,4 +367,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "817def9044383e77ff2749f1a77a8aadaa87c43ee5ce55b13b33fa0854fa64d6"
+content-hash = "cf7b893b9b16239bd6de84c8c8e96c204125fc1a3eac03b890fda3db75458418"
