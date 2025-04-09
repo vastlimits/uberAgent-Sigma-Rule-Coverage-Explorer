@@ -12,12 +12,13 @@ from sigma.collection import SigmaCollection
 from sigma.exceptions import SigmaTransformationError
 
 from sigma.backends.uberagent import uberagent as uberagent_backend
-from sigma.pipelines.uberagent import uberagent600, uberagent610, uberagent620, uberagent700, uberagent710, uberagent720, uberagent730, uberagent_develop
+from sigma.pipelines.uberagent import uberagent600, uberagent610, uberagent620, uberagent700, uberagent710, uberagent720, uberagent730, uberagent740, uberagent_develop
 from sigma.backends.uberagent.exceptions import MissingPropertyException
 
 def get_backends():
     return {
         "uberAgent (develop)": convert_uberagent_develop,
+        "uberAgent 7.4": convert_uberagent740,
         "uberAgent 7.3": convert_uberagent730,
         "uberAgent 7.2": convert_uberagent720,
         "uberAgent 7.1": convert_uberagent710,
