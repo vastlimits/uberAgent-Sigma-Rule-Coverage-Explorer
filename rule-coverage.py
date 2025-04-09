@@ -43,12 +43,12 @@ def convert_uberagent720(rule: SigmaCollection):
     return uberagent_backend(processing_pipeline=uberagent720()).convert(rule, "conf")
 
 
-def convert_uberagent740(rule: SigmaCollection):
-    return uberagent_backend(processing_pipeline=uberagent740()).convert(rule, "conf")
-
-
 def convert_uberagent730(rule: SigmaCollection):
     return uberagent_backend(processing_pipeline=uberagent730()).convert(rule, "conf")
+
+
+def convert_uberagent740(rule: SigmaCollection):
+    return uberagent_backend(processing_pipeline=uberagent740()).convert(rule, "conf")
 
 
 def convert_uberagent_develop(rule: SigmaCollection):
